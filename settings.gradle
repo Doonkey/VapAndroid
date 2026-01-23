@@ -1,0 +1,79 @@
+pluginManagement {
+    repositories {
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/repository/gradle-plugin'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/repository/google'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/repository/jcenter'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/groups/public'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin'
+        }
+        //url "http://219.140.177.146:52298/repository/maven-releases/"
+        maven {
+            allowInsecureProtocol = true
+            url "http://192.168.0.110:8083/repository/maven-releases/"
+        }
+        maven {
+            allowInsecureProtocol = true
+            url "http://192.168.0.110:8083/repository/maven-snapshots/"
+        }
+        maven { url "https://jitpack.io" }
+        maven { url 'https://repo1.maven.org/maven2/' }//友盟sdk
+        maven { url "https://maven.aliyun.com/repository/public" }
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/repository/google'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/repository/jcenter'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/groups/public'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin'
+        }
+        //url "http://219.140.177.146:52298/repository/maven-releases/"
+        maven {
+            allowInsecureProtocol = true
+            url "http://192.168.0.110:8083/repository/maven-releases/"
+        }
+        maven {
+            allowInsecureProtocol = true
+            url "http://192.168.0.110:8083/repository/maven-snapshots/"
+        }
+        maven { url "https://jitpack.io" }
+        maven { url 'https://repo1.maven.org/maven2/' }//友盟sdk
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://maven.mozilla.org/maven2/" }
+    }
+}
+
+include ':app',':animtool'
+include ':animplayer'
