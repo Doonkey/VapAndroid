@@ -1,5 +1,8 @@
 ## Android VAP
 
+fork from Tencent/vap
+详情及原理:https://github.com/Doonkey/vap_4k/blob/master/Introduction.md
+
 使用kotlin实现，Java代码也可以直接引用，使用样例可以参考demo
 
 
@@ -17,8 +20,11 @@ private fun init() {
     animView = (AnimView) findViewById(R.id.player);
     // 可选: 设置视频对齐方式（默认FIT_XY，支持自定义）
     animView.setScaleType(ScaleType.FIT_XY)
+    //循环次数,playLoop < 0时无限循环,playLoop = 0时不循环,playLoop > 0时循环playLoop次
+    animView.setLoop(-1)
     // 开始播放动画文件
     animView.startPlay(file)
+
 }
 ```
 
@@ -57,6 +63,13 @@ interface IAnimListener {
      * 播放器被销毁情况下会调用onVideoDestroy
      */
     fun onVideoDestroy()
+
+    /**
+     * 播放进度回调
+     * @param progressMs 当前播放进度(毫秒)
+     * @param durationMs 总时长(毫秒)
+     */
+    fun onVideoProgress(progressMs: Long, durationMs: Long) {}
 
     /**
      * 失败回调
@@ -105,16 +118,10 @@ maven方式引入
 
 ```gradle
 repositories {
-    mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    implementation "io.github.tencent:vap:2.0.28"
+    implementation 'com.github.Doonkey.VapAndroid:animplayer:1.0.0'
 }
 ```
-
-通知：由于jcenter将于2022年停止服务，VAP迁移到mavenCentral（从2.0.15版本开始）。如果需要低版本（低于2.0.15版本）需要自行切换到对应版本的release tag，打aar包的方式进行集成。
-
-aar引入
-
-需要自己打包animplayer项目为aar（PlayerProj/animplayer）
