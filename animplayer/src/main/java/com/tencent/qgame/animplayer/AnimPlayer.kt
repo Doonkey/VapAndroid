@@ -146,7 +146,7 @@ class AnimPlayer(val animView: IAnimView) {
 
     fun isRunning(): Boolean {
         return isStartRunning // 启动过程运行状态
-                || (decoder?.isRunning ?: false) // 解码过程运行状态
+                && (decoder?.isRunning ?: false) // 解码过程运行状态
 
     }
 
