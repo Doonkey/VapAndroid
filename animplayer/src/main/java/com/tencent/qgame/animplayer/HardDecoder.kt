@@ -329,8 +329,10 @@ class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture.OnFrameA
                             onVideoStart()
                         }
                         player.pluginManager.onDecoding(frameIndex)
-                        onVideoRender(frameIndex, player.configManager.config)
-                        onVideoProgress(seekToWindow.first, bufferInfo.presentationTimeUs / 1000, durationMs)
+                        if (!isSeekReq){
+                            onVideoRender(frameIndex, player.configManager.config)
+                            onVideoProgress(seekToWindow.first, bufferInfo.presentationTimeUs / 1000, durationMs)
+                        }
 
                         frameIndex++
 
