@@ -29,6 +29,8 @@ public class CommonArg {
 
     public int fps = 25;
 
+    public String force_key_frames = "0.000";//插入关键帧
+
     public String inputPath; // 输入帧文件地址
 
     public float scale = 0.5f; // alpha 区域缩放大小
