@@ -67,10 +67,11 @@ interface IAnimListener {
 
     /**
      * 播放进度回调
+     * @param windowIndex 当前播放的media index
      * @param progressMs 当前播放进度(毫秒)
      * @param durationMs 总时长(毫秒)
      */
-    fun onVideoProgress(progressMs: Long, durationMs: Long) {}
+    fun onVideoProgress(windowIndex: Int, progressMs: Long, durationMs: Long) {}
 
 
     /**

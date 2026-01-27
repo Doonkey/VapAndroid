@@ -164,8 +164,8 @@ abstract class Decoder(val player: AnimPlayer) : IAnimListener {
         player.animListener?.onVideoDestroy()
     }
 
-    override fun onVideoProgress(progressMs: Long, durationMs: Long) {
-        player.animListener?.onVideoProgress(progressMs, durationMs)
+    override fun onVideoProgress(windowIndex: Int, progressMs: Long, durationMs: Long) {
+        player.animListener?.onVideoProgress(windowIndex, progressMs, durationMs)
     }
 
 

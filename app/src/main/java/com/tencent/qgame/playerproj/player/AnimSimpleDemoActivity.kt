@@ -131,8 +131,8 @@ class AnimSimpleDemoActivity : Activity(), IAnimListener {
     override fun onVideoRender(frameIndex: Int, config: AnimConfig?) {
     }
 
-    override fun onVideoProgress(progressMs: Long, durationMs: Long) {
-        //println("onVideoProgress progressMs=$progressMs durationMs=$durationMs")
+    override fun onVideoProgress(windowIndex: Int, progressMs: Long, durationMs: Long) {
+        println("onVideoProgress $windowIndex ===progressMs=$progressMs durationMs=$durationMs")
     }
 
     /**

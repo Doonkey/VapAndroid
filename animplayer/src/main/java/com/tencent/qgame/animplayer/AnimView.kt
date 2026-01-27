@@ -84,8 +84,8 @@ open class AnimView @JvmOverloads constructor(context: Context, attrs: Attribute
                 animListener?.onVideoDestroy()
             }
 
-            override fun onVideoProgress(progressMs: Long, durationMs: Long) {
-                animListener?.onVideoProgress(progressMs, durationMs)
+            override fun onVideoProgress(windowIndex: Int, progressMs: Long, durationMs: Long) {
+                animListener?.onVideoProgress(windowIndex, progressMs, durationMs)
             }
 
 
