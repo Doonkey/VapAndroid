@@ -174,7 +174,7 @@ open class AnimView @JvmOverloads constructor(context: Context, attrs: Attribute
         super.onAttachedToWindow()
         player.isDetachedFromWindow = false
         // 自动恢复播放
-        if (player.playLoop > 0) {
+        if (player.playLoop != 0) {
             lastFile?.apply {
                 startPlayInner(this)
             }
@@ -316,12 +316,12 @@ open class AnimView @JvmOverloads constructor(context: Context, attrs: Attribute
                 ALog.e(TAG, "AnimView is GONE, can't play")
                 return@ui
             }
-            if (!player.isRunning()) {
-                lastFile = fileContainer
-                player.startPlay(fileContainer)
-            } else {
-                ALog.e(TAG, "is running can not start")
+            if (player.isRunning()) {
+                player.stopPlay()
             }
+            lastFile?.close()
+            lastFile = fileContainer
+            player.startPlay(fileContainer)
         }
     }
 

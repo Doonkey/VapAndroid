@@ -188,7 +188,7 @@ class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture.OnFrameA
                 start()
                 decodeThread.handler?.post {
                     try {
-                        startDecode(extractor, this, durationMs)
+                        startDecode(extractor, this, fileContainer, durationMs)
                     } catch (e: Throwable) {
                         ALog.e(TAG, "MediaCodec exception e=$e", e)
                         onFailed(Constant.REPORT_ERROR_TYPE_DECODE_EXC, "${Constant.ERROR_MSG_DECODE_EXC} e=$e")
@@ -204,13 +204,12 @@ class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture.OnFrameA
         }
     }
 
-    private fun startDecode(extractor: MediaExtractor, decoder: MediaCodec, durationMs: Long) {
+    private fun startDecode(extractor: MediaExtractor, decoder: MediaCodec, fileContainer: IFileContainer, durationMs: Long) {
         val TIMEOUT_USEC = 10000L
         var inputChunk = 0
         var outputDone = false
         var inputDone = false
         var frameIndex = 0
-        var isLoop = false
 
         val decoderInputBuffers = decoder.inputBuffers
 
@@ -325,7 +324,7 @@ class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture.OnFrameA
                         // release & render
                         decoder.releaseOutputBuffer(decoderStatus, doRender && !needYUV)
 
-                        if (frameIndex == 0 && !isLoop) {
+                        if (frameIndex == 0) {
                             onVideoStart()
                         }
                         player.pluginManager.onDecoding(frameIndex)
@@ -340,12 +339,19 @@ class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture.OnFrameA
                         if (loop != 0) {
                             ALog.d(TAG, "Reached EOD, looping")
                             player.pluginManager.onLoopStart()
-                            extractor.seekTo(0, MediaExtractor.SEEK_TO_CLOSEST_SYNC)
+                            //decoder.flush()会出现部分机器native层内存释放不完全,直接不复用解码器,重新播放
+                            isSwitching = true
+                            recycleDecoder(decoder, extractor)
+                            renderThread.handler?.post {
+                                startPlay(fileContainer)
+                            }
+                            return
+
+/*                            extractor.seekTo(0, MediaExtractor.SEEK_TO_CLOSEST_SYNC)
                             inputDone = false
                             decoder.flush()
                             speedControlUtil.reset()
-                            frameIndex = 0
-                            isLoop = true
+                            frameIndex = 0*/
                         } else if (outputDone) {
                             if (player.hasNext()) {
                                 val nextFile = player.next()
@@ -428,9 +434,6 @@ class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture.OnFrameA
                 recycleDecoder(decoder, extractor)
                 speedControlUtil.reset()
                 player.pluginManager.onRelease()
-                render?.releaseTexture()
-                surface?.release()
-                surface = null
             } catch (e: Throwable) {
                 ALog.e(TAG, "release e=$e", e)
             }
@@ -451,6 +454,8 @@ class HardDecoder(player: AnimPlayer) : Decoder(player), SurfaceTexture.OnFrameA
         extractor?.release()
         glTexture?.release()
         glTexture = null
+        surface?.release()
+        surface = null
     }
 
     override fun destroy() {
