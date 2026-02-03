@@ -25,19 +25,19 @@ public class CommonArg {
 
     public String mp4editCmd = "mp4edit"; // bento4 mp4edit 命令地址
 
-    public boolean enableH265 = false; // 是否开启h265
+    public boolean enableH265 = true; // 是否开启h265
 
     public int fps = 25;
-
+    
     public String force_key_frames = "0.000";//插入关键帧
 
     public String inputPath; // 输入帧文件地址
 
-    public float scale = 0.5f; // alpha 区域缩放大小
+    public float scale = 1.0f; // alpha 区域缩放大小
 
     public boolean enableCrf = false; // 是否开启可变码率
 
-    public int bitrate = 2000; // 码率
+    public int bitrate = 15000; // 4k码率
 
     public int crf = 29; // 0(无损) - 50(最大压缩)
 

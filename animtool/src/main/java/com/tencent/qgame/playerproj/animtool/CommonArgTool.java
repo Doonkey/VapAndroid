@@ -17,6 +17,7 @@ class CommonArgTool {
 
     /**
      * 参数自动填充
+     *
      * @param commonArg
      */
     static boolean autoFillAndCheck(CommonArg commonArg, AnimTool.IToolListener toolListener) throws Exception {
@@ -44,18 +45,20 @@ class CommonArgTool {
         if (commonArg.needAudio) {
             File audio = new File(commonArg.audioPath);
             if (!audio.exists() || commonArg.audioPath == null || commonArg.audioPath.length() < 3) {
-                TLog.e(TAG , "audio file not exists " + commonArg.audioPath);
+                TLog.e(TAG, "audio file not exists " + commonArg.audioPath);
                 return false;
             }
             String type = commonArg.audioPath.substring(commonArg.audioPath.length() - 3).toLowerCase();
             if (!"mp3".equals(type)) {
-                TLog.e(TAG , "audio file must be mp3 file " + commonArg.audioPath);
+                TLog.e(TAG, "audio file must be mp3 file " + commonArg.audioPath);
                 return false;
             }
         }
 
         // output path
-        commonArg.outputPath = commonArg.inputPath + AnimTool.OUTPUT_DIR;
+        if (commonArg.outputPath == null || commonArg.outputPath.isEmpty()) {
+            commonArg.outputPath = commonArg.inputPath + AnimTool.OUTPUT_DIR;
+        }
 
         // 帧图片生成路径
         commonArg.frameOutputPath = commonArg.outputPath + AnimTool.FRAME_IMAGE_DIR;
@@ -66,13 +69,13 @@ class CommonArgTool {
             commonArg.scale = 0.5f;
             int size = commonArg.srcSet.srcs.size();
             SrcSet.Src src;
-            for (int i=0; i<size; i++) {
+            for (int i = 0; i < size; i++) {
                 src = commonArg.srcSet.srcs.get(i);
                 src.srcId = String.valueOf(i);
                 src.z = i;
                 File srcPath = new File(src.srcPath);
                 if (!srcPath.exists()) {
-                    TLog.e(TAG, "src="+ src.srcId+",path invalid " + src.srcPath);
+                    TLog.e(TAG, "src=" + src.srcId + ",path invalid " + src.srcPath);
                     continue;
                 }
                 if (!File.separator.equals(src.srcPath.substring(src.srcPath.length() - 1))) {
@@ -154,7 +157,7 @@ class CommonArgTool {
 
         // 获取总帧数
         commonArg.totalFrame = 0;
-        for (int i=0; i<=10000; i++) {
+        for (int i = 0; i <= 10000; i++) {
             File frameFile = new File(commonArg.inputPath + String.format("%03d", i) + ".png");
             // 顺序检查
             if (!frameFile.exists()) {
