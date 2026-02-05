@@ -55,11 +55,8 @@ class AnimPlayer(val animView: IAnimView) {
     var supportMaskBoolean: Boolean = false
     var maskEdgeBlurBoolean: Boolean = false
 
-    // 是否兼容老版本 默认不兼容
-    var enableVersion1: Boolean = false
-
     // 视频模式
-    var videoMode: Int = Constant.VIDEO_MODE_SPLIT_HORIZONTAL
+    var videoMode: Int = Constant.VIDEO_MODE_SPLIT_HORIZONTAL_REVERSE
     var isDetachedFromWindow = false
     var isSurfaceAvailable = false
     var startRunnable: Runnable? = null
@@ -104,7 +101,7 @@ class AnimPlayer(val animView: IAnimView) {
         }
         // 在线程中解析配置
         decoder?.renderThread?.handler?.post {
-            val result = configManager.parseConfig(fileContainer, enableVersion1, videoMode, defaultFps)
+            val result = configManager.parseConfig(fileContainer, videoMode, defaultFps)
             if (result != Constant.OK) {
                 isStartRunning = false
                 decoder?.onFailed(result, Constant.getErrorMsg(result))

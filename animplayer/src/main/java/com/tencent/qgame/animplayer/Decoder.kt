@@ -85,17 +85,12 @@ abstract class Decoder(val player: AnimPlayer) : IAnimListener {
         return createThread(renderThread, "anim_render_thread") && createThread(decodeThread, "anim_decode_thread")
     }
 
-    fun prepareRender(needYUV: Boolean): Boolean {
+    fun prepareRender(): Boolean {
         if (render == null) {
             ALog.i(TAG, "prepareRender")
             player.animView.getSurfaceTexture()?.apply {
-                if (needYUV) {
-                    ALog.i(TAG, "use yuv render")
-                    render = YUVRender(this)
-                } else {
-                    render = Render(this).apply {
-                        updateViewPort(surfaceWidth, surfaceHeight)
-                    }
+                render = Render(this).apply {
+                    updateViewPort(surfaceWidth, surfaceHeight)
                 }
             }
         }

@@ -78,8 +78,6 @@ class AnimSpecialSizeDemoActivity : Activity(), IAnimListener {
         animView = findViewById(R.id.playerView)
         // 视频左右对齐（rgb左\alpha右）
         animView.setVideoMode(Constant.VIDEO_MODE_SPLIT_HORIZONTAL_REVERSE)
-        // 兼容老版本视频资源
-        animView.enableVersion1(true)
         // 居中（根据父布局按比例居中并全部显示，默认fitXY）
         animView.setScaleType(ScaleType.FIT_CENTER)
         // 注册动画监听
