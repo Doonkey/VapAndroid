@@ -38,7 +38,7 @@ def run(args_list=None):
         "-f", "--ffmpeg", default="ffmpeg", help="FFmpeg executable path"
     )
     parser.add_argument(
-        "-m", "--mp4edit", default="mp4edit", help="Mp4edit executable path"
+        "-m", "--mp4edit", default=None, help="Mp4edit executable path; mp4edit|None,default None, no vapc.json to write;"
     )
 
     # H265 handling: default True, support --no-h265

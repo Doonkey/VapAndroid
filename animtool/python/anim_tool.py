@@ -188,10 +188,12 @@ class AnimTool:
 
     def create_video(self, common_arg):
         try:
-            self.create_vapc_json(common_arg)
-
+            if common_arg.mp4edit_cmd:
+                output_file = os.path.join(common_arg.output_path, self.TEMP_VIDEO_FILE)
+            else:
+                output_file = os.path.join(common_arg.output_path, self.VIDEO_FILE)
             result = self.create_mp4(
-                common_arg, common_arg.output_path, common_arg.frame_output_path
+                common_arg, output_file, common_arg.frame_output_path
             )
             if not result:
                 TLog.i(self.TAG, "createMp4 fail")
@@ -207,19 +209,23 @@ class AnimTool:
                     return False
                 temp_video_name = self.TEMP_VIDEO_AUDIO_FILE
 
-            # Json to Bin
-            input_json = os.path.join(common_arg.output_path, self.VAPC_JSON_FILE)
-            mp4_box_tool = Mp4BoxTool()
-            vapc_bin_path = mp4_box_tool.create(input_json, common_arg.output_path)
-
-            # Merge Bin
-            result = self.merge_bin_2_mp4(
-                common_arg, self.VAPC_BIN_FILE, temp_video_name, common_arg.output_path
-            )
-            if not result:
-                TLog.i(self.TAG, "mergeBin2Mp4 fail")
-                self.delete_file(common_arg)
-                return False
+            if common_arg.mp4edit_cmd:
+                self.create_vapc_json(common_arg)
+                # Json to Bin
+                input_json = os.path.join(common_arg.output_path, self.VAPC_JSON_FILE)
+                mp4_box_tool = Mp4BoxTool()
+                vapc_bin_path = mp4_box_tool.create(input_json, common_arg.output_path)
+                # Merge Bin
+                result = self.merge_bin_2_mp4(
+                    common_arg,
+                    self.VAPC_BIN_FILE,
+                    temp_video_name,
+                    common_arg.output_path,
+                )
+                if not result:
+                    TLog.i(self.TAG, "mergeBin2Mp4 fail")
+                    self.delete_file(common_arg)
+                    return False
 
             self.delete_file(common_arg)
 
@@ -339,16 +345,15 @@ class AnimTool:
         ]
         return cmd
 
-    def create_mp4(self, common_arg, video_path, frame_image_path):
+    def create_mp4(self, common_arg, output_file, frame_image_path):
         TLog.i(self.TAG, "run createMp4")
-        cmd = self.get_ffmpeg_cmd(common_arg, video_path, frame_image_path)
+        cmd = self.get_ffmpeg_cmd(common_arg, output_file, frame_image_path)
         result = ProcessUtil.run(cmd)
         TLog.i(self.TAG, f"createMp4 result={'success' if result == 0 else 'fail'}")
         return result == 0
 
-    def get_ffmpeg_cmd(self, common_arg, video_path, frame_image_path):
+    def get_ffmpeg_cmd(self, common_arg, output_file, frame_image_path):
         input_pattern = os.path.join(frame_image_path, "%03d.png")
-        output_file = os.path.join(video_path, self.TEMP_VIDEO_FILE)
 
         cmd = [
             common_arg.ffmpeg_cmd,

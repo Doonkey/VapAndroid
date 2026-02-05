@@ -41,7 +41,7 @@ pip install -r requirements.txt
 You can run the tool via `main.py`.
 
 ```bash
-python main.py --input /path/to/frames_dir --output /path/to/output_dir --fps 24
+python main.py --input /path/to/frames_dir --output /path/to/output_dir --fps 25
 ```
 
 ### Options
